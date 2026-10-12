@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Shane Singh, game engineer: gameplay systems and applied generative AI. Featuring Digby Deep and YOLO Square.">
+<meta property="og:title" content="Shane Singh Portfolio">
+<meta property="og:description" content="Gameplay systems and applied generative AI. Featuring Digby Deep and YOLO Square.">
+<meta name="theme-color" content="#15112a">
+<style>
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+</style>
+<title>Shane Singh Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Pixelify+Sans:wght@500;700&display=swap">
+<style>
+/* Layout: a night-sky page that descends like a mine shaft. Hero, a map of where to look,
+   then one chamber per project, each keyed to its own game's color. Single dark world by choice. */
+:root {
+  color-scheme: dark;
+  --night: #15112a;        /* page ground, Digby's sky */
+  --night-2: #1e1838;      /* raised surfaces */
+  --night-3: #2a2250;      /* hover, chips */
+  --line: #3b3168;         /* hairlines, borders */
+  --ink: #efeaf8;          /* body text */
+  --muted: #a99fc6;        /* secondary text */
+  --gold: #f7bd3a;         /* Digby Deep */
+  --gold-deep: #9c5d12;
+  --pink: #ff5a92;         /* YOLO Square */
+  --cyan: #5fd2ef;
+  --ok: #6fdc9a;
+  --warn: #ffc65c;
+  --bad: #ff6b6b;
+  --soil: #2b1f22;
+
+  --f-display: "Pixelify Sans", "Courier New", ui-monospace, monospace;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.25rem;
+  --step-2: 1.6rem;
+  --step-3: clamp(2rem, 4.4vw, 2.75rem);
+  --step-4: clamp(2.6rem, 8vw, 5rem);
+}
+
+* { box-sizing: border-box; }
+html { background: var(--night); }
+body {
+  background: var(--night);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; border-radius: 2px; }
+::selection { background: var(--gold); color: var(--night); }
+
+.wrap { max-width: 72rem; margin-inline: auto; padding-inline: 20px; }
+
+/* starfield behind the hero only */
+.sky {
+  position: relative;
+  background:
+    radial-gradient(1.5px 1.5px at 12% 18%, var(--ink) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 78% 9%, var(--ink) 50%, transparent 51%),
+    radial-gradient(1px 1px at 33% 42%, var(--muted) 50%, transparent 51%),
+    radial-gradient(1px 1px at 58% 27%, var(--muted) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 91% 55%, var(--ink) 50%, transparent 51%),
+    radial-gradient(1px 1px at 6% 70%, var(--muted) 50%, transparent 51%),
+    radial-gradient(1px 1px at 45% 8%, var(--ink) 50%, transparent 51%),
+    radial-gradient(1px 1px at 68% 64%, var(--muted) 50%, transparent 51%);
+}
+
+/* ---------- top bar ---------- */
+.top {
+  display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between;
+  padding-block: 22px;
+  font-family: var(--f-mono); font-size: var(--step--1); color: var(--muted);
+}
+.top nav { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.top nav a { text-decoration: none; }
+.top nav a:hover { color: var(--ink); }
+.top .mark { font-family: var(--f-display); font-weight: 700; color: var(--ink); font-size: 1.05rem; letter-spacing: 0.02em; }
+
+/* ---------- hero ---------- */
+.hero {
+  display: grid; gap: 40px; align-items: center;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  padding-block: 28px 64px;
+}
+.eyebrow {
+  font-family: var(--f-mono); font-size: var(--step--1); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); margin: 0 0 14px;
+}
+.hero h1 {
+  font-family: var(--f-display); font-weight: 700; font-size: var(--step-4);
+  line-height: 0.95; margin: 0 0 18px; color: var(--gold);
+  text-shadow: 4px 4px 0 var(--gold-deep), 8px 8px 0 var(--night-3);
+  text-wrap: balance;
+}
+.hero .role { font-size: var(--step-1); font-weight: 700; margin: 0 0 18px; color: var(--ink); }
+.hero .intro { color: var(--ink); max-width: 36rem; margin: 0 0 14px; }
+.hero .intro.dim { color: var(--muted); }
+.contact-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--f-mono); font-size: var(--step--1); font-weight: 500;
+  padding: 10px 14px; border: 2px solid var(--line); background: var(--night-2); color: var(--ink);
+  text-decoration: none; cursor: pointer; border-radius: 0;
+  box-shadow: 3px 3px 0 var(--night-3);
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+.btn:hover { border-color: var(--gold); transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--gold-deep); }
+.btn.primary { background: var(--gold); border-color: var(--gold); color: var(--night); box-shadow: 3px 3px 0 var(--gold-deep); }
+.btn .k { color: var(--muted); }
+.btn.primary .k { color: var(--night); opacity: 0.7; }
+.copy-status { font-family: var(--f-mono); font-size: var(--step--1); color: var(--ok); align-self: center; min-height: 1.4em; }
+
+.hero-shots { position: relative; display: grid; gap: 14px; }
+.hero-shots figure { margin: 0; }
+.hero-shots img { display: block; width: 100%; height: auto; border: 2px solid var(--line); background: var(--night-2); }
+.hero-shots .a { margin-right: 14%; box-shadow: 6px 6px 0 var(--gold-deep); }
+.hero-shots .b { margin-left: 14%; margin-top: -9%; position: relative; box-shadow: 6px 6px 0 #6b1f43; }
+.hero-shots .b img { border-color: #6b1f43; }
+.hero-shots figcaption { font-family: var(--f-mono); font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
+
+/* ---------- ground line between sky and mine ---------- */
+.ground {
+  height: 18px;
+  background:
+    repeating-linear-gradient(90deg, var(--gold) 0 14px, var(--night) 14px 28px) top / 100% 4px no-repeat,
+    linear-gradient(var(--soil), var(--soil)) 0 4px / 100% 14px no-repeat;
+}
+
+/* ---------- section scaffolding ---------- */
+section.chamber { padding-block: 72px; border-bottom: 2px solid var(--line); }
+.label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--f-mono); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 4px 10px; border: 2px solid currentColor; margin-bottom: 18px;
+}
+.label .dot { width: 8px; height: 8px; background: currentColor; }
+h2 { font-family: var(--f-display); font-weight: 700; font-size: var(--step-3); line-height: 1.05; margin: 0 0 12px; text-wrap: balance; }
+h3 { font-family: var(--f-display); font-weight: 500; font-size: var(--step-1); margin: 0 0 14px; letter-spacing: 0.01em; }
+.lede { font-size: var(--step-1); max-width: 44rem; margin: 0 0 8px; }
+.tagline { font-family: var(--f-mono); color: var(--muted); margin: 0 0 18px; }
+.muted { color: var(--muted); }
+p { margin: 0 0 12px; }
+
+/* ---------- where to look ---------- */
+.map { padding-block: 64px 72px; border-bottom: 2px solid var(--line); }
+.map h2 { font-size: var(--step-2); }
+.map .sub { color: var(--muted); max-width: 44rem; margin-bottom: 26px; }
+.map-table { width: 100%; border-collapse: collapse; }
+.map-scroll { overflow-x: auto; }
+.map-table th, .map-table td { text-align: left; vertical-align: top; padding: 14px 16px 14px 0; border-top: 1px solid var(--line); }
+.map-table th { width: 30%; font-weight: 700; font-size: var(--step-0); padding-right: 24px; }
+.map-table td { color: var(--muted); }
+.map-table td p { margin: 0 0 8px; }
+.map-table td p:last-child { margin: 0; }
+.chip {
+  display: inline-block; font-family: var(--f-mono); font-size: 0.74rem; font-weight: 500; letter-spacing: 0.04em;
+  padding: 1px 7px; margin-right: 8px; border: 1.5px solid currentColor; text-decoration: none; white-space: nowrap;
+}
+.chip.dg { color: var(--gold); }
+.chip.ys { color: var(--pink); }
+.chip.nx { color: var(--cyan); }
+a.chip:hover { background: var(--night-3); }
+
+/* ---------- shots ---------- */
+.shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-block: 30px 40px; }
+.shots figure { margin: 0; }
+.shots img { display: block; width: 100%; height: auto; border: 2px solid var(--line); }
+.shots figcaption { font-family: var(--f-mono); font-size: 0.8rem; color: var(--muted); margin-top: 8px; }
+
+/* ---------- two-column body ---------- */
+.cols { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 48px; }
+.spec { margin: 0 0 32px; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 18px; font-size: var(--step--1); }
+.spec dt { font-family: var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.76rem; padding-top: 3px; }
+.spec dd { margin: 0; }
+
+.loop { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; counter-reset: loop; }
+.loop li {
+  counter-increment: loop; display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 10px; align-items: baseline;
+  padding: 9px 0; border-top: 1px dashed var(--line);
+}
+.loop li::before { content: counter(loop); font-family: var(--f-display); color: var(--gold); font-size: 1.1rem; }
+.loop li:last-child::after {
+  content: "↺ back to 1, a little deeper"; grid-column: 2; font-family: var(--f-mono); font-size: 0.78rem; color: var(--muted);
+}
+
+.hooks { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+.hooks li { padding-left: 22px; position: relative; }
+.hooks li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 9px; height: 9px; background: var(--gold); }
+.yolo .hooks li::before { background: var(--pink); }
+.hooks strong { color: var(--ink); }
+
+/* ---------- build notes ---------- */
+.build { margin-top: 56px; }
+.build-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 48px; }
+.note { padding: 18px 0; border-top: 1px solid var(--line); min-width: 0; }
+.note .tag {
+  display: inline-block; font-family: var(--f-mono); font-size: 0.78rem; color: var(--gold);
+  background: var(--night-2); border: 1px solid var(--line); padding: 2px 8px; margin-bottom: 8px; overflow-wrap: anywhere;
+}
+.note h4 { margin: 0 0 6px; font-size: var(--step-0); }
+.note p { color: var(--muted); margin: 0; }
+.note code { font-family: var(--f-mono); font-size: 0.9em; color: var(--ink); }
+
+/* ---------- YOLO modes ---------- */
+.yolo .label { color: var(--pink); }
+.yolo h2 { color: var(--pink); text-shadow: 3px 3px 0 #2b5f7a; }
+.digby .label { color: var(--gold); }
+.digby h2 { color: var(--gold); text-shadow: 3px 3px 0 var(--gold-deep); }
+.modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0 0 18px; }
+.mode { padding: 18px; border: 2px solid currentColor; }
+.mode.y { color: var(--pink); background: #2a1430; }
+.mode.e { color: var(--ok); background: #13261f; }
+.mode b { font-family: var(--f-display); font-size: 1.5rem; display: block; margin-bottom: 6px; }
+.mode p { color: var(--ink); margin: 0; font-size: var(--step--1); }
+.design-note { border-left: 3px solid var(--cyan); padding: 4px 0 4px 16px; color: var(--ink); margin-top: 26px; }
+.design-note span { display: block; font-family: var(--f-mono); font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cyan); margin-bottom: 4px; }
+
+/* ---------- next ---------- */
+.next .label { color: var(--cyan); }
+.ideas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 26px; }
+.idea { padding: 22px; border: 2px dashed var(--line); }
+.idea .for { font-family: var(--f-mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+.idea .for.dg { color: var(--gold); }
+.idea .for.ys { color: var(--pink); }
+.idea h4 { margin: 0 0 8px; font-size: var(--step-1); font-family: var(--f-display); font-weight: 500; }
+.idea p { color: var(--muted); margin: 0 0 10px; font-size: var(--step--1); }
+.idea p:last-child { margin: 0; }
+.idea .guard { color: var(--ink); }
+
+/* ---------- contact ---------- */
+.contact { padding-block: 72px 88px; }
+.contact h2 { color: var(--gold); text-shadow: 3px 3px 0 var(--gold-deep); }
+.contact p { max-width: 40rem; color: var(--muted); }
+.email { font-family: var(--f-mono); font-size: var(--step-1); color: var(--ink); user-select: all; overflow-wrap: anywhere; }
+
+/* ---------- responsive ---------- */
+[hidden] { display: none !important; }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .cols { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+}
+@media (max-width: 680px) {
+  .shots, .build-grid, .modes, .ideas { grid-template-columns: minmax(0, 1fr); }
+  .map-table th, .map-table td { display: block; width: 100%; padding-right: 0; }
+  .map-table td { border-top: 0; padding-top: 0; }
+  section.chamber { padding-block: 56px; }
+  .hero-shots .a { margin-right: 8%; }
+  .hero-shots .b { margin-left: 8%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="sky">
+  <div class="wrap">
+    <header class="top">
+      <span class="mark">Shane Singh</span>
+      <nav aria-label="Sections">
+        <a href="#where">Where to look</a>
+        <a href="#digby">Digby Deep</a>
+        <a href="#yolo">YOLO Square</a>
+        <a href="#next">AI next</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <div>
+        <p class="eyebrow">Game engineer · New York</p>
+        <h1>Shane Singh</h1>
+        <p class="role">Gameplay systems and applied generative AI</p>
+        <p class="intro">I care most about the moment a player takes control: how movement feels, how quickly a system teaches itself, and whether the next attempt feels worth one more try.</p>
+        <p class="intro dim">I hold AI in games to the same standard. Generated content only works when it feels intentional, stays inside the game's rules, and makes play more fun instead of more random. This portfolio walks through two browser games I designed and built, and where generative AI could take each of them next.</p>
+        <div class="contact-row">
+          <a class="btn primary" href="#digby">See the work <span class="k">↓</span></a>
+          <a class="btn" href="https://github.com/shay2222" target="_blank" rel="noopener">GitHub <span class="k">shay2222</span></a>
+          <button class="btn" type="button" id="copy-email-top" data-email="shaness220@gmail.com">Copy email <span class="k">shaness220@gmail.com</span></button>
+          <span class="copy-status" id="copy-status-top" role="status" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="hero-shots" aria-label="Title screens">
+        <figure class="a">
+          <img src="img/digby-title.jpg" width="898" height="636" alt="Digby Deep title screen: a pixel-art mining town at night with a drill pod beside a derrick, above layers of dirt and ore.">
+          <figcaption>Digby Deep · title screen</figcaption>
+        </figure>
+        <figure class="b">
+          <img src="img/yolo-title.jpg" width="1146" height="676" alt="YOLO Square title screen: a glowing pink square with eyes, the game's neon logo, and cards for YOLO and EZ modes.">
+          <figcaption>YOLO Square · mode select</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ground" aria-hidden="true"></div>
+
+<main>
+  <div class="wrap">
+
+    <!-- where to look -->
+    <section class="map" id="where" aria-labelledby="where-h">
+      <p class="eyebrow">For the hiring team</p>
+      <h2 id="where-h">Where to look</h2>
+      <p class="sub">The skills a gameplay and generative AI role asks for, and the part of this portfolio that shows each one.</p>
+      <div class="map-scroll">
+        <table class="map-table">
+          <tbody>
+            <tr>
+              <th scope="row">Player controllers and real-time systems</th>
+              <td>
+                <p><a class="chip dg" href="#digby">Digby Deep</a>Fixed 60-step physics, collision resolved one axis at a time, and drilling timed by rock hardness and drill speed.</p>
+                <p><a class="chip ys" href="#yolo">YOLO Square</a>Precision movement on keyboard, gamepad and touch.</p>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Economy, progression and balance</th>
+              <td><p><a class="chip dg" href="#digby">Digby Deep</a>Branching upgrades with gem-gated top tiers, shifting market prices, a nine-building town, and contracts with streaks and guild rank.</p></td>
+            </tr>
+            <tr>
+              <th scope="row">Difficulty and the player journey</th>
+              <td><p><a class="chip ys" href="#yolo">YOLO Square</a>The same ten levels played two ways: one life for the whole run, or unlimited retries with every death counted.</p></td>
+            </tr>
+            <tr>
+              <th scope="row">Determinism and debugging</th>
+              <td><p><a class="chip dg" href="#digby">Digby Deep</a>Seeded world generation, and one stats function that recomputes from scratch so upgrades can't stack incorrectly.</p></td>
+            </tr>
+            <tr>
+              <th scope="row">Guardrails between AI output and the player</th>
+              <td><p><a class="chip nx" href="#next">Proposals</a>Rules layers that would check generated contracts and levels before players see them. Designed, not yet built.</p></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Digby Deep -->
+    <section class="chamber digby" id="digby" aria-labelledby="digby-h">
+      <span class="label"><span class="dot"></span>Mining · progression</span>
+      <h2 id="digby-h">Digby Deep</h2>
+      <p class="lede">An 8-bit mining game inspired by Motherload. You drive a small drill pod with animated eyes down through six zones, from Topsoil through the Magma Belt and the Abyss to the Core, 4,600 ft down, where you crack open the planet's Heart.</p>
+
+      <div class="shots">
+        <figure>
+          <img src="img/digby-title.jpg" width="898" height="636" alt="Digby Deep title screen with the town hall, drop-off sign, workshop, and the yellow pixel logo.">
+          <figcaption>The town on the surface: sell, upgrade, and take contracts here.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/digby-play.jpg" width="875" height="679" alt="Digby Deep gameplay: the pod has drilled down 39 ft into Topsoil. Fuel and hull bars run across the top, the headlight cuts a cone through the darkness, and four gadget slots sit at the bottom.">
+          <figcaption>39 ft into Topsoil. Fuel and hull up top, headlight cut from the dark layer, gadgets on 1–4.</figcaption>
+        </figure>
+      </div>
+
+      <div class="cols">
+        <div>
+          <dl class="spec">
+            <dt>Runs in</dt><dd>The browser, from one HTML file of about 150 KB</dd>
+            <dt>Built with</dt><dd>JavaScript, Canvas 2D, Web Audio</dd>
+            <dt>Assets</dt><dd>None loaded. Every sprite and sound is generated in code.</dd>
+            <dt>World</dt><dd>64 × 376 tiles, six zones, seeded</dd>
+            <dt>Controls</dt><dd>Arrows or WASD to drive, down to drill, up to fly, 1–4 for gadgets</dd>
+          </dl>
+          <h3>The core loop</h3>
+          <ol class="loop">
+            <li>Dig for ore.</li>
+            <li>Fly home before the fuel runs out.</li>
+            <li>Sell at the drop-off.</li>
+            <li>Upgrade the pod and the town.</li>
+            <li>Dig deeper.</li>
+          </ol>
+        </div>
+        <div>
+          <h3>What keeps players digging</h3>
+          <ul class="hooks">
+            <li><strong>Branching pod upgrades.</strong> Each part splits into one of two specialties, and the top levels cost gems.</li>
+            <li><strong>Modules and gadgets.</strong> Extra kit such as the Ore Scanner, with combinations that unlock bonus synergies.</li>
+            <li><strong>A town you build.</strong> Nine buildings paid for in cash and ore, growing the town from Outpost to Capital.</li>
+            <li><strong>Contracts.</strong> Several types and rarities, with streak bonuses and a guild rank.</li>
+            <li><strong>Reasons to return.</strong> Shifting market prices, hidden relics, and a new-planet restart after you win.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="build">
+        <h3>How it's built</h3>
+        <div class="build-grid">
+          <div class="note">
+            <span class="tag">64 × 376 tiles · seeded</span>
+            <h4>The world is a grid of numbers</h4>
+            <p>The mine is one flat list where each value is a tile: dirt, rock, gold, gas, lava. It's generated from a seed, so the same seed always rebuilds the same map. Random-walking worms carve the caves, and each zone has its own ore odds.</p>
+          </div>
+          <div class="note">
+            <span class="tag">recompute, don't patch</span>
+            <h4>One state object, one stats function</h4>
+            <p>Everything that gets saved lives in a single object. Instead of nudging stats on every purchase, one function recalculates them all from scratch, which removes a whole class of stacking bugs.</p>
+          </div>
+          <div class="note">
+            <span class="tag">60 physics steps / s</span>
+            <h4>A fixed-step game loop</h4>
+            <p>Physics runs at a fixed 60 steps per second while drawing happens every frame. Collision moves the pod sideways first, then vertically, and pushes it out of any solid tile. Drilling isn't instant: the pod slides into the tile over a time set by rock hardness and drill speed, then the game resolves what was inside.</p>
+          </div>
+          <div class="note">
+            <span class="tag">whole-number zoom</span>
+            <h4>Sharp pixels, cached tiles</h4>
+            <p>The canvas draws at whole-number zoom so pixels stay crisp, and each tile design is cached after its first draw. Darkness is its own layer, with holes cut for the headlight, lava and sparks.</p>
+          </div>
+          <div class="note">
+            <span class="tag">^ ^ · X X · frown</span>
+            <h4>The pod's eyes are rules</h4>
+            <p>They follow your movement or drill direction, jitter while drilling, and blink on a random timer. They turn to <code>^ ^</code> for ore, <code>X X</code> when hurt, and a frown when the hull is low.</p>
+          </div>
+          <div class="note">
+            <span class="tag">G4 C5 E5 G5 - E5 G5 -</span>
+            <h4>Music written as text</h4>
+            <p>Songs are note strings that the code parses and schedules a split second ahead on the audio clock, so the rhythm never drifts. Bass lines and arpeggios are generated from the chord names.</p>
+          </div>
+          <div class="note">
+            <span class="tag">saves in town only</span>
+            <h4>Saving the dug-out world</h4>
+            <p>Progress, including the whole dug-out map, saves to browser storage only while you're in town. Older saves are converted to the newer format.</p>
+          </div>
+          <div class="note">
+            <span class="tag">DOM over canvas</span>
+            <h4>Menus as page elements</h4>
+            <p>The menus and HUD are regular web page elements layered over the canvas, which keeps text sharp and the game view simple.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- YOLO Square -->
+    <section class="chamber yolo" id="yolo" aria-labelledby="yolo-h">
+      <span class="label"><span class="dot"></span>Precision arcade · 10 levels</span>
+      <h2 id="yolo-h">YOLO Square</h2>
+      <p class="tagline">One square. Ten levels. You only live once.</p>
+      <p class="lede">A neon arcade game about precision. You steer a small pink square with big eyes through rooms of dodging dots, timed lasers, rising spikes and drifters that move at random. In each level you collect every coin, then reach the exit. The levels build steadily to a final level called YOLO.</p>
+
+      <div class="shots">
+        <figure>
+          <img src="img/yolo-title.jpg" width="1146" height="676" alt="YOLO Square title screen with the pink square character, the neon logo, YOLO and EZ mode cards, and a legend of dots, drifters, lasers, spikes, coins and power-ups.">
+          <figcaption>Mode select, with a legend that teaches every hazard before the first level.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/yolo-play.jpg" width="984" height="686" alt="YOLO Square level 4, Spin Cycle: rotating arms of blue dots sweep the room between spike clusters, with coins to collect and a locked exit in the corner.">
+          <figcaption>Level 4/10, Spin Cycle, on EZ: rotating arms of dots around spike clusters.</figcaption>
+        </figure>
+      </div>
+
+      <div class="cols">
+        <div>
+          <h3>Two modes, two player journeys</h3>
+          <div class="modes">
+            <div class="mode y"><b>YOLO</b><p>One life for the whole run. One hit ends it.</p></div>
+            <div class="mode e"><b>EZ</b><p>Unlimited lives. Respawn at the start of the level you died on, with every death counted.</p></div>
+          </div>
+          <p class="muted">Both modes play the same ten levels and keep separate best scores, so a player can learn the rooms on EZ and then take them on in one life.</p>
+          <dl class="spec">
+            <dt>Runs in</dt><dd>The browser</dd>
+            <dt>Controls</dt><dd>Keyboard, gamepad and touch</dd>
+            <dt>Levels</dt><dd>10, hand-built</dd>
+          </dl>
+        </div>
+        <div>
+          <h3>Features</h3>
+          <ul class="hooks">
+            <li><strong>Ten hand-built levels,</strong> including a spiral, a staircase, a crossroads and a ring.</li>
+            <li><strong>Enemies at different speeds,</strong> plus random drifters whose eyes show where they're about to go.</li>
+            <li><strong>Power-ups:</strong> shield, slow-mo and speed boost.</li>
+            <li><strong>Dark neon visuals</strong> with a chiptune soundtrack that speeds up each level.</li>
+            <li><strong>Separate best scores</strong> for each mode.</li>
+          </ul>
+          <p class="design-note"><span>Design note</span>Drifters move at random, but their eyes show where they're heading next. The randomness stays readable, so a hit feels like the player's mistake rather than bad luck.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- next -->
+    <section class="chamber next" id="next" aria-labelledby="next-h">
+      <span class="label"><span class="dot"></span>Design proposals · not yet built</span>
+      <h2 id="next-h">Where generative AI fits next</h2>
+      <p class="lede">Both games have systems a model could feed, as long as a rules layer checks the output first.</p>
+      <div class="ideas">
+        <div class="idea">
+          <div class="for dg">Digby Deep</div>
+          <h4>Generated contracts</h4>
+          <p>A model writes contract briefs and the guild master's dialogue, so the board stays fresh on every planet.</p>
+          <p class="guard">Rules layer: every contract must name ore that exists in a zone the player can reach, and pay within the economy's bounds. The recompute-from-scratch stats function makes the reward math easy to check before a contract goes up.</p>
+        </div>
+        <div class="idea">
+          <div class="for ys">YOLO Square</div>
+          <h4>Generated levels with a solvability gate</h4>
+          <p>A model proposes hazard layouts in the style of the ten hand-built rooms.</p>
+          <p class="guard">Rules layer: a solver simulates the hazard timing and rejects any layout without a safe path, then scores difficulty so a new level slots into the curve between existing ones.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- contact -->
+    <section class="contact" id="contact" aria-labelledby="contact-h">
+      <h2 id="contact-h">Let's talk</h2>
+      <p>I'm looking for a role building gameplay where generative AI makes play better. I'd be glad to walk through any of these systems in detail.</p>
+      <p class="email" id="email-text">shaness220@gmail.com</p>
+      <div class="contact-row">
+        <button class="btn primary" type="button" id="copy-email" data-email="shaness220@gmail.com">Copy email</button>
+        <a class="btn" href="https://github.com/shay2222" target="_blank" rel="noopener">GitHub <span class="k">github.com/shay2222</span></a>
+        <span class="copy-status" id="copy-status" role="status" aria-live="polite"></span>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script>
+(function () {
+  // Copy buttons: clipboard inside the click handler, select the text if that's refused.
+  function wireCopy(buttonId, statusId) {
+    var btn = document.getElementById(buttonId);
+    var status = document.getElementById(statusId);
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var email = btn.getAttribute('data-email');
+      function selectFallback() {
+        var el = document.getElementById('email-text');
+        if (el && window.getSelection) {
+          var range = document.createRange();
+          range.selectNodeContents(el);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          el.scrollIntoView({ block: 'center' });
+        }
+        status.textContent = 'Selected. Press Ctrl+C or Cmd+C to copy.';
+      }
+      try {
+        navigator.clipboard.writeText(email).then(function () {
+          status.textContent = 'Copied ' + email;
+        }, selectFallback);
+      } catch (e) { selectFallback(); }
+    });
+  }
+  wireCopy('copy-email-top', 'copy-status-top');
+  wireCopy('copy-email', 'copy-status');
+
+})();
+</script>
+
+</body>
+</html>
